@@ -3,7 +3,7 @@
 class InetAddress;
 class Socket{
 public:
-    int fd; //文件描述符 file descriptor
+
     Socket();
     Socket(int);
     ~Socket();
@@ -17,6 +17,6 @@ public:
     int getFd();
 
 private:
-
+    int fd; //文件描述符 file descriptor
 
 }

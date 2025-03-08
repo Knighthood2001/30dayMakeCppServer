@@ -10,22 +10,22 @@ Socket::Socket() : fd(-1) {
     errif(fd == -1, "socket create error");
 }
 
-Socket::Socket(int fd){
-    this->fd = fd;
+Socket::Socket(int _fd): fd(_fd){
+    errif(fd == -1, "socket create error"); // 将fd赋值为_fd
 }
 Socket::~Socket(){
     if(fd != -1){
-        close(fd);
+        close(fd);  
         fd = -1;
     }
 }
 void Socket::bind(InetAddress *addr){
-    errif(bind(fd, (sockaddr*)&InetAddress::addr, InetAddress::addr_len) == -1, "socket bind error");
+    errif(::bind(fd, (sockaddr*)&addr->addr, addr->addr_len) == -1, "socket bind error");
     
 }
 
 void Socket::listen(){
-    errif(listen(fd, SOMAXCONN) == -1, "socket listen error");
+    errif(::listen(fd, SOMAXCONN) == -1, "socket listen error");
 }
 
 void Socket::setnonblocking(){
@@ -33,7 +33,12 @@ void Socket::setnonblocking(){
 }
 
 int Socket::accept(InetAddress* addr){
-    int sockfd = accept(fd, (sockaddr*)&InetAddress::addr, &InetAddress::addr_len);
+    int sockfd = ::accept(fd, (sockaddr*)&addr->addr, &addr->addr_len);
     errif(sockfd == -1, "socket accept error");
     return sockfd;
 };
+
+//是的，Socket::getFd() 函数通常是为了访问类中的私有成员变量 fd 而设计的。
+int Socket::getFd(){
+    return fd;
+}
