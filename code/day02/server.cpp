@@ -28,9 +28,9 @@ int main() {
 
     printf("new client fd %d! IP: %s Port: %d\n", clnt_sockfd, inet_ntoa(clnt_addr.sin_addr), ntohs(clnt_addr.sin_port));
     while (true) {
-        char buf[1024];
-        bzero(&buf, sizeof(buf));
-        ssize_t read_bytes = read(clnt_sockfd, buf, sizeof(buf));
+        char buf[1024];  //定义缓冲区，用于接收客户端发送的消息
+        bzero(&buf, sizeof(buf));  //清空缓冲区
+        ssize_t read_bytes = read(clnt_sockfd, buf, sizeof(buf));  //从客户端读取数据，并存入buf中
         if(read_bytes > 0){
             printf("message from client fd %d: %s\n", clnt_sockfd, buf);
             write(clnt_sockfd, buf, sizeof(buf));
